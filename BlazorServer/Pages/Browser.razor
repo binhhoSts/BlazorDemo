@@ -1,0 +1,87 @@
+﻿@page "/browser"
+
+@using BlazorServer.Data
+@using BlazorServer.Entity
+@using BlazorServer.Service
+@inject BrowserService browserService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IJSRuntime jsRuntime
+
+<h1>Browser browser</h1>
+
+<div class="container">
+    <div class="row">
+
+        @foreach (var b in browsers)
+        {
+            <div class="col-sm">
+                @b.Name
+                <img style="width:100px;height:100px;" src=@b.Image class="img-fluid img-thumbnail mx-auto d-block">
+                <AppPassword browser=@b></AppPassword>
+            </div>
+            <button class="btn btn-primary" @onclick="()=>openEditModal(b)">Modal!</button>
+
+        }
+    </div>
+</div>
+
+<div>
+
+    @foreach (var b in appPasses)
+    {
+        <div class="col-sm">
+            @b.Name,@b.Username,@b.Password
+        </div>
+    }
+</div>
+
+@*<BrowserEditModal @ref="modal" Browser="@currentBrowser">
+        <Title>This is a <em>Title!</em></Title>
+        <Body>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Omnes enim iucundum motum, quo sensus hilaretur.
+                <i>Quis istud possit, inquit, negare?</i>
+                <mark>Ego vero isti, inquam, permitto.</mark> Duo Reges: constructio interrete.
+            </p>
+            <FetchData />
+            <dl>
+                <dt><dfn>Stoici scilicet.</dfn></dt>
+                <dd>An hoc usque quaque, aliter in vita?</dd>
+                <dt><dfn>Erat enim Polemonis.</dfn></dt>
+                <dd>Quod cum accidisset ut alter alterum necopinato videremus, surrexit statim.</dd>
+            </dl>
+        </Body>
+        <Footer>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => modal.Close()">Close</button>
+        </Footer>
+    </BrowserEditModal>*@
+
+@code{
+    private List<BrowserEntity> browsers = new List<BrowserEntity>();
+    private List<AppPasswordEntity> appPasses = new List<AppPasswordEntity>();
+    private Guid? userId;
+    //private BrowserEditModal modal { get; set; }
+    private BrowserEntity currentBrowser { get; set; }
+
+    public void openEditModal(BrowserEntity browser)
+    {
+        currentBrowser = browser;
+        //modal.Open();
+    }
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    var browsers = browserService.GetAllPublicBrowser();
+
+    //    this.browsers = browsers;
+    //    currentBrowser = browsers.First();
+
+    //    userId = await localStorage.GetItemAsync<Guid>("userId");
+
+    //    if (userId != null)
+    //    {
+    //        appPasses = browserService.GetAppPass(userId);
+    //    }
+    //}
+}

@@ -1,0 +1,66 @@
+﻿@using BlazorServer.Service
+@inject LoginService loginService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+@if (!string.IsNullOrEmpty(showUsername))
+{
+    <a href="Identity/Account/Manage">Hello, @showUsername!</a>
+    <form method="post" action="Identity/Account/LogOut">
+        <button type="submit" class="nav-link btn btn-link">Log out</button>
+    </form>
+}
+else
+{
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" @bind="@username" placeholder="Username" aria-label="Username">
+
+        <input type="text" class="form-control" @bind="@password" placeholder="Server" aria-label="Password">
+
+        <span class="input-group-text" @onclick="Login">Log in</span>
+        <span class="input-group-text" @onclick="()=>Login()">Register</span>
+    </div>
+}
+
+
+
+@code {
+    private string showUsername;
+
+    private string username;
+    private string password;
+
+    private async Task Login()
+    {
+        var response = loginService.Login(username, password);
+        if (response.isSuccess)
+        {
+            var userId = response.model.Id;
+            await localStorage.SetItemAsync("userId", userId);
+            await localStorage.SetItemAsync("username", username);
+            showUsername = username;
+            //NavManager.NavigateTo("/browser");
+        }
+        else
+        {
+            //message = response.message;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        this.StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        //username2 = await localStorage.GetItemAsync<string>("username");
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task Logout()
+    {
+        await localStorage.RemoveItemAsync("username");
+        await localStorage.RemoveItemAsync("userId");
+    }
+}

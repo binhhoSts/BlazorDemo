@@ -1,0 +1,78 @@
+﻿@page "/"
+
+@using BlazorServer.Data
+@using BlazorServer.Models
+@using BlazorServer.Service
+@inject LoginService loginService
+@inject NavigationManager NavManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<h1>Ay yo, world!</h1>
+
+Log your in. Are u ready
+<br />
+<br />
+<br />
+
+<div class="col-auto">
+    <label for="staticEmail2" class="visually-hidden">Email</label>
+    <input type="text" class="form-control" @bind="@username" placeholder="Username">
+</div>
+<div class="col-auto">
+    <label for="inputPassword2" class="visually-hidden">Password</label>
+    <input type="password" class="form-control" @bind="@password" placeholder="Password">
+</div>
+<div class="col-auto">
+    <button class="btn btn-primary mb-3" @onclick="Login">Confirm identity</button>
+</div>
+<div class="col-4">
+</div>
+<div class="col-auto">
+    |||   <button class="btn btn-link float-right" @onclick="Register">Register</button>
+</div>
+<button @onclick="init">init</button>
+
+
+@code {
+    private string username;
+    private string password;
+    private string message;
+    private string token;
+    public UserEntity user;
+
+    private async Task Login()
+    {
+        var response = loginService.Login(username, password);
+        if (response.isSuccess)
+        {
+            var userId = response.model.Id;
+            await localStorage.SetItemAsync("userId",userId);
+            await localStorage.SetItemAsync("username", username);
+            NavManager.NavigateTo("/browser");
+        }
+        else
+        {
+            message = response.message;
+        }
+    }
+
+    private void Register()
+    {
+        var response = loginService.Register(username, password);
+        if (response.isSuccess)
+        {
+            message = response.message;
+        }
+        else
+        {
+            message = response.message;
+        }
+
+        token = response.data.ToString();
+    }
+
+    private void init()
+    {
+        loginService.init();
+    }
+}

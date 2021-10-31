@@ -1,0 +1,33 @@
+﻿@page "/ti10"
+
+@using HtmlAgilityPack;
+@using Service;
+@using System;
+
+@inject CrawService crawService
+@convertedMarkdown
+
+<h1>The international 10 watcher</h1>
+
+<div class="container">
+
+    @((MarkupString)convertedMarkdown)
+
+</div>
+
+@code{
+    private MarkupString convertedMarkdown;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var t = crawService.FromWeb("https://liquipedia.net/dota2/The_International/2021/Main_Event#Main_Event");
+        convertedMarkdown = (MarkupString) t;
+    }
+
+    public string checkcurrentUser()
+    {
+        var t = crawService.FromWeb("https://liquipedia.net/dota2/The_International/2021");
+
+        return t;
+    }
+}
