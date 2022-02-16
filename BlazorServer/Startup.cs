@@ -38,7 +38,7 @@ namespace BlazorServer
             services.AddTransient<CrawService>();
             
 
-            var connectionString = "Server=STS-BINHHO;User Id=meone;Password=123456;Database=BlazorDemo2;Trusted_Connection=True;";
+            var connectionString = "Server=BINHHO;User Id=meone;Password=123456;Database=BlazorDemo2";
 
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(connectionString)
