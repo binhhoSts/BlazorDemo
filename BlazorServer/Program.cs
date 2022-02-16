@@ -35,10 +35,10 @@ namespace BlazorServer
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                var services = scope.ServiceProvider;
-                var dbContext = services.GetRequiredService<ApplicationDbContext>();
+                //var services = scope.ServiceProvider;
+                //var dbContext = services.GetRequiredService<ApplicationDbContext>();
 
-                dbContext.Database.Migrate();
+                //dbContext.Database.Migrate();
             }
 
             return host;

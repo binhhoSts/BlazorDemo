@@ -36,13 +36,15 @@ namespace BlazorServer
             services.AddTransient<LoginService>();
             services.AddTransient<BrowserService>();
             services.AddTransient<CrawService>();
-            
 
-            var connectionString = "Server=BINHHO;User Id=meone;Password=123456;Database=BlazorDemo2";
 
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(connectionString)
-                , ServiceLifetime.Transient);
+            //var connectionString = "Server=BINHHO;User Id=meone;Password=123456;Database=BlazorDemo2";
+
+            //services.AddDbContext<ApplicationDbContext>(
+            //    options => options.UseSqlServer(connectionString)
+            //    , ServiceLifetime.Transient);
+
+            services.AddDbContext<ApplicationDbContext>();
 
 
             services.AddBlazoredLocalStorage(config =>
